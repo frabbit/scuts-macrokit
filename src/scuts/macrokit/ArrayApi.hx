@@ -27,6 +27,11 @@ import scuts.macrokit.OptionApi;
 		return res;
 	}
 
+	static function dropBack<T>(a:Array<T>, num:Int):Array<T>
+	{
+		return take(a, a.length - num);
+	}
+
 	static function take<T> (it:Array<T>, numElements:Int):Array<T>
 	{
 		var res = [];
@@ -105,6 +110,15 @@ import scuts.macrokit.OptionApi;
 		for (i in 0...arr.length)
 		{
 			acc = f(acc, arr[i]);
+		}
+		return acc;
+	}
+
+	@:pure static inline function foldLeftWithIndex<A,B>(arr:Array<A>, acc:B, f:B->A->Int->B):B
+	{
+		for (i in 0...arr.length)
+		{
+			acc = f(acc, arr[i], i);
 		}
 		return acc;
 	}
