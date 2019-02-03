@@ -5,7 +5,7 @@ package scuts.macrokit;
 import haxe.macro.Context as C;
 import haxe.macro.Expr;
 import haxe.macro.Type;
-
+import haxe.ds.Option;
 
 
 
@@ -29,10 +29,21 @@ class TypeApi {
 		} catch (e:Dynamic) {
 			false;
 		}
+	}
 
-
-
-
+	public static function getBaseType (a:Type):Option<BaseType> {
+		return switch a {
+			case TMono(mt): if (mt == null) None else getBaseType(mt.get());
+			case TInst(_.get() => x, _): Some(x);
+			case TEnum(_.get() => x, _): Some(x);
+			case TAbstract(_.get() => x, _): Some(x);
+			case TType(_.get() => x, _): Some(x);
+			case TFun(_, _): None;
+			case TAbstract(_.get() => x, _): Some(x);
+			case TAnonymous(_): None;
+			case TDynamic(_):None;
+			case TLazy(lz): getBaseType(lz());
+		}
 	}
 }
 

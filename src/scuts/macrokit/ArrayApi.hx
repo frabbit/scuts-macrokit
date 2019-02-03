@@ -13,6 +13,10 @@ import scuts.macrokit.OptionApi;
 		return [for (b in a) for (c in b) c];
 	}
 
+	static inline function append <T>(a:Array<T>, e:T):Array<T> {
+		return a.concat([e]);
+	}
+
 	static function drop<T>(a:Array<T>, num:Int):Array<T>
 	{
 		var res = [];
